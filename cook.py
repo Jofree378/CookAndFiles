@@ -1,3 +1,5 @@
+# Импорт модуля для красивого отображения вывода
+
 from pprint import pprint
 
 class Cooking:
@@ -7,6 +9,9 @@ class Cooking:
         self.recipes = {}
 
     def create_cook_book(self, text_file):
+
+        # Создаем словарь с блюдами из файла, перебирая его построчно
+
         with open(text_file, 'r', encoding='utf-8') as f:
             temp = 1
             for line in f:
@@ -20,8 +25,8 @@ class Cooking:
             for recipe, about in self.recipes.items():
                 ingredients_dict = []
                 for i in range(2, len(about)):
-                    ingredients = about[i].split(' | ')
-                    ingredients_dict.append({'ingredient_name': ingredients[0], 'quantity': ingredients[1], 'measure': ingredients[2]})
+                    ingredient = about[i].split(' | ')
+                    ingredients_dict.append({'ingredient_name': ingredient[0], 'quantity': ingredient[1], 'measure': ingredient[2]})
                 self.cook_book[about[0]] = ingredients_dict
         return self.cook_book
 
@@ -30,7 +35,7 @@ class Cooking:
         for dish in dishes:
             if dish in self.cook_book:
                 for ingredient in self.cook_book[dish]:
-                    about_dict = {'measure' : ingredient['measure'], 'quantity' : ingredient['quantity']}
+                    about_dict = {'measure' : ingredient['measure'], 'quantity' : int(ingredient['quantity']) * person_count}
                     if full_ingredients.get(ingredient['ingredient_name']):
                         full_ingredients[ingredient['ingredient_name']]['quantity'] = int(full_ingredients[ingredient['ingredient_name']]['quantity']) + int(about_dict['quantity'])
                     else:
@@ -41,4 +46,4 @@ class Cooking:
 
 master = Cooking()
 master.create_cook_book('recipe.txt')
-pprint(master.get_shop_list_by_dishes(['Фахитос', 'Омлет'], 2))
+pprint(master.get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
